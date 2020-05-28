@@ -89,6 +89,7 @@ void setup() {
   Container failed_ED = check_data(cur_network); // failed ED list mush be reinitialized again after used
   Serial.println("After data update:");
   printAll(cur_network);
+  Serial.println(cur_network.size());
   
 
   // Check if all EDs have reported data, notify the broken EDs 
