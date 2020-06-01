@@ -8,7 +8,9 @@ Data::Data(){
   _data = {};
   }
   
-Data::Data(uint32_t address, vector<float> data){
+Data::Data(uint32_t address, vector<int> data){
   _address = address;
-  _data = data;
+  for(auto& d: data){
+    _data.push_back(d);
+    }
   }

@@ -2,7 +2,7 @@ uint8_t payload[] = {0,0};
 
 void setup() {
 Serial.begin(9600);  
-int data = NAN;
+int data = 4090;
 Serial.println(data);
 payload[0] = data >> 8 & 0xff;
 payload[1] = data & 0xff;

@@ -8,9 +8,9 @@ using namespace std;
 class Data{
   public:
     Data();
-    Data(uint32_t address, vector<float> data);
+    Data(uint32_t address, vector<int> data);
     uint32_t _address;
-    vector<float> _data;
+    vector<int> _data;
   };
 
 #endif // Data_h
