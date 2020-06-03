@@ -2,8 +2,8 @@
 #include "Network.h"
 #include "Data.h"
 
-vector<int> len_0 = {0, 0, 0, 0, 0, 0};
-vector<int> len = {1, 2, 3, 4, 5, 6}; // synthetic data for extensometer lengths 
+vector<uint16_t> len_0 = {0x00, 0x00, 0x00, 0x00 , 0x00, 0x00};
+vector<uint16_t> len = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06}; // synthetic data for extensometer lengths 
 
 //EndDevice ED1 = EndDevice("16",0x41512860,1,30,len_0);
 //EndDevice ED2 = EndDevice("17",0x41512873,1,45,len);
@@ -33,6 +33,7 @@ void setup() {
     Serial.println(s._address);
     for(auto& d : s._data){Serial.println(d);}
     }
+    uint16_t* arr[6] = len_0.data();
 }
 
 void loop() {

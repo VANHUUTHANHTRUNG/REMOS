@@ -1,3 +1,5 @@
+// Free Serial port for a period of time to get data from xbee.( Arduino to Arduino)
+
 #include <XBee.h>
 XBee xbee = XBee();
 XBeeResponse response = XBeeResponse();
@@ -52,5 +54,24 @@ void loop() {
       }
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  

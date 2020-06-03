@@ -31,3 +31,7 @@ String EndDevice::info(){
 void EndDevice::set_ext_len(vector<uint16_t> new_ext_len){
   _ext_len = new_ext_len;
   }
+
+int EndDevice::get_data_size(){
+  return _ext_len.size();
+  }

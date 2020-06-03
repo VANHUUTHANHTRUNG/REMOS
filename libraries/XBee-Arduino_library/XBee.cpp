@@ -1435,7 +1435,9 @@ RemoteAtCommandRequest::RemoteAtCommandRequest(XBeeAddress64 &remoteAddress64, u
 
 RemoteAtCommandRequest::RemoteAtCommandRequest(XBeeAddress64 &remoteAddress64, uint8_t *command) : AtCommandRequest(command, NULL, 0) {
 	_remoteAddress64 = remoteAddress64;
-	_remoteAddress16 = ZB_BROADCAST_ADDRESS;
+	// set _remoteAddress16 to BROADCAST_ADDRESS as with ZB_BROADCAST_ADDRESS, there is no response with IS ATCMD
+	// _remoteAddress16 = ZB_BROADCAST_ADDRESS;
+	_remoteAddress16 = BROADCAST_ADDRESS;
 	_applyChanges = false;
 	setApiId(REMOTE_AT_REQUEST);
 }

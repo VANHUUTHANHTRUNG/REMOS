@@ -1,5 +1,4 @@
 #include <XBee.h>
-#include<>
 /*
 This example is for Series 1 XBee
 Sends a TX16 or TX64 request with the value of analogRead(pin5) and checks the status response for success
@@ -19,7 +18,7 @@ uint8_t payload[] = { 0, 0 };
 //Tx16Request tx = Tx16Request(0x15, payload, sizeof(payload));
 
 // 64-bit addressing: This is the SH + SL address of remote XBee
-XBeeAddress64 addr64 = XBeeAddress64(0x0013a200, 0x41512875);
+XBeeAddress64 addr64 = XBeeAddress64(0x0013a200, 0x41512745);
 // unless you have MY on the receiving radio set to FFFF, this will be received as a RX16 packet
 Tx64Request tx = Tx64Request(addr64, payload, sizeof(payload));
 

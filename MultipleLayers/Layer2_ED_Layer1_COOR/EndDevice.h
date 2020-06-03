@@ -13,8 +13,9 @@ class EndDevice{
       int _location;
       int _angle;
       void set_ext_len(vector<uint16_t> new_ext_len);
+      int get_data_size();
       vector<uint16_t> _ext_len;
       String info(); // return all information of ED in string
-//      void update_data();
+
   };
 #endif // EndDevice_h

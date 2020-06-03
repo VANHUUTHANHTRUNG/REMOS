@@ -37,15 +37,31 @@ EndDevice* Network::find_device(uint32_t address){
     }
     return nullptr;
   }
-//
-//void Network::update_data(const vector<uint16_t>& new_data){
-//  for(const auto& n : new_data){
-//    EndDevice* existed_ED = find_device(n._address);
-//    if(existed_ED != nullptr){
-//      n->_ext_len = n._data;
-//      }
-//    else{
-//      else Serial.println("Can not find corresponding addres");
-//      }
-//    }
-//  }
+  
+void Network::update_data(uint32_t address, vector<uint16_t> new_data){
+  EndDevice* existed_ED = find_device(address);
+  if(existed_ED != nullptr){
+    Serial.println("Found address of new data");
+    existed_ED->_ext_len = new_data;
+    }
+  else{
+    Serial.println("Can not find corresponding address");
+    }
+  }
+  
+int Network::get_payload_size(){
+  return _net[0].get_data_size() * get_size();
+  }
+
+int Network::get_data_size(){
+  return _net[0].get_data_size();
+  }
+
+void Network::construct_payload(uint16_t* payload){
+  for(int i = 0;i<get_size();i++){
+    for(int j = 0; j < get_data_size();j++){
+      *(payload+ i*get_data_size() + j) = _net[i]._ext_len[j];
+      }
+    }
+  return payload;
+  }

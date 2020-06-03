@@ -1,5 +1,8 @@
+// Used for range test in tunnel, receive data from sleeping device when wake up
 #include <XBee.h>
-
+#include "EndDevice.h"
+#include "Network.h"
+#include "Data.h"
 XBee xbee = XBee();
 
 Rx64IoSampleResponse ioSample = Rx64IoSampleResponse();
