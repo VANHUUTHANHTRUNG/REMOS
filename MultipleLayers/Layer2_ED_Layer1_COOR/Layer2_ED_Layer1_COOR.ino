@@ -25,7 +25,7 @@ int tx_sending_time = 5000;    // Time reserved for receiving response after sen
 int command = 0;
 //----------------------------------------------------------- Functions----------------------------------------------------------------
 void receive_io(int io_receiving_time); // Start reading packets from sleeping devices
-//void send_payload(int tx_sending_time);
+void send_payload(int tx_sending_time);
 
 void setup() {
   Serial.begin(9600);
@@ -40,26 +40,29 @@ void loop() {
     command = Serial.read();
     if(command != 10){
       switch(command){
-        case 114: // press "r" button and send
+        case 114: // press "r" button to send
           Serial.println("Receive data command");
           receive_io(io_receiving_time);
-        break;
-        case 112: // press "p" button and send
+          break;
+        case 116:
+          Serial.println("Construct payload and send to Coordinator of layer L2");
+          send_payload(tx_sending_time);
+          break;
+        case 112: // press "p" button to send
           Serial.println("Print network command");
           Serial.println(network.info());
-        break;
-        case 99: // press "c" button and construct
+          break;
+        case 99: // press "c" button to construct
           Serial.println("Construct payload array to send");
-          uint16_t payload[network.get_payload_size()];
+          uint8_t payload[network.get_payload_size()*2];
           network.construct_payload(payload);
-          for(int i = 0;i< network.get_payload_size();i++){
+          for(int i = 0;i< network.get_payload_size()*2;i++){
             Serial.println(payload[i]);
           }
-          
-          break;
+          break;  
         default:
-        Serial.println("Unknown command");
-        break;
+          Serial.println("Unknown command");
+          break;
         }
       }
     }
@@ -109,12 +112,39 @@ void receive_io(int io_receiving_time){
     Serial.println("Finished reading data");
   }
 
-//void send_payload(int tx_sending_time){
-//  Serial.println("Send payload in tx-packet, during 5s wait for tx status response");
-//  uint16_t payload[network.get_payload_size()];
-//  network.construct_payload(payload);
-//  
-//  }
+void send_payload(int tx_sending_time){
+  Serial.println("Send payload in tx-packet, during 5s wait for tx status response");
+  uint8_t payload[network.get_payload_size()*2]; // from 16-bit resolution measurement, need to convert to 2 8-bit values to send by xbee => payload size = 2 * initial payload
+  network.construct_payload(payload);
+  Tx64Request tx = Tx64Request(addr64, payload, sizeof(payload));
+  xbee_L2.send(tx);
+  Serial.println("Packet sent, wating for response");
+    if (xbee_L2.readPacket(tx_sending_time)) {
+        // got a response!
+
+        // should be a znet tx status              
+    if (xbee_L2.getResponse().getApiId() == TX_STATUS_RESPONSE) {
+         xbee_L2.getResponse().getTxStatusResponse(txStatus);
+        
+         // get the delivery status, the fifth byte
+    if (txStatus.getStatus() == SUCCESS) {
+              // success.  time to celebrate
+              Serial.println("SUCCESS");
+    } else {
+              // the remote XBee did not receive our packet. is it powered on?
+              Serial.println("Failed");
+           }
+        }      
+    } else if (xbee_L2.getResponse().isError()) {
+      Serial.print("Error reading packet.  Error code: ");  
+      Serial.println(xbee_L2.getResponse().getErrorCode());
+      // or flash error led
+    } else {
+      // local XBee did not provide a timely TX Status Response.  Radio is not configured properly or connected
+      Serial.println("Other error");
+    }
+   Serial.println("Finished sending and receing response process");
+  }
 
 
 

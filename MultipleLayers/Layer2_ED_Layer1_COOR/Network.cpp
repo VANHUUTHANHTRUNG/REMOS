@@ -57,10 +57,11 @@ int Network::get_data_size(){
   return _net[0].get_data_size();
   }
 
-void Network::construct_payload(uint16_t* payload){
+void Network::construct_payload(uint8_t* payload){
   for(int i = 0;i<get_size();i++){
     for(int j = 0; j < get_data_size();j++){
-      *(payload+ i*get_data_size() + j) = _net[i]._ext_len[j];
+      *(payload+ (i*get_data_size() + j)*2) = _net[i]._ext_len[j] >> 8 & 0xff;
+      *(payload+ (i*get_data_size() + j)*2 + 1) = _net[i]._ext_len[j] & 0xff;
       }
     }
   return payload;
